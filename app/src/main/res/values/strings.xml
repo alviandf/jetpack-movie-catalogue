@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Movie Catalogue</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movie">Movie</string>
+    <string name="tv_show">Tv Show</string>
+    <string name="sample_name">King Kong</string>
+    <string name="sample_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis tristique nisi, eleifend cursus quam. Ut vitae accumsan nunc. Quisque pharetra maximus orci, sed consectetur diam vehicula sit amet. Nam pretium massa eu sem tincidunt aliquet. Mauris laoreet, magna sed sollicitudin interdum, nunc lacus ullamcorper nunc, quis accumsan magna lacus in dolor. Donec aliquet eros ac dictum facilisis. Quisque eu odio eget elit consectetur ullamcorper vel a arcu. Fusce ultricies elit interdum, facilisis augue lacinia, volutpat est. Ut congue sapien nunc, ac ultricies arcu sollicitudin ut. Ut tellus dolor, blandit ut malesuada eu, elementum eget quam. Vestibulum dapibus elit eu nisl convallis vestibulum. Nam sagittis maximus ipsum eget vehicula. Sed aliquet pretium urna eget convallis. Phasellus eu molestie leo. Sed pretium felis at pulvinar fermentum. Etiam id justo sit amet ante consequat rutrum. Duis dignissim felis a augue facilisis, sed venenatis ex bibendum. Fusce gravida, felis vel malesuada consectetur, augue nisl iaculis lectus, vel egestas purus mi at nulla.</string>
+</resources>

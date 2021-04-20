@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@id/navMovie">
+
+    <fragment
+        android:id="@+id/navMovie"
+        android:name="com.alviandf.moviecatalogue.presentation.main.MovieFragment"
+        android:label="Fragment Movie"
+        tools:layout="@layout/fragment_movie" />
+
+    <fragment
+        android:id="@+id/navTv"
+        android:name="com.alviandf.moviecatalogue.presentation.main.TvFragment"
+        android:label="Fragment TV Show"
+        tools:layout="@layout/fragment_tv" />
+
+
+</navigation>
