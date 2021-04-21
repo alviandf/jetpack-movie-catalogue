@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
-import com.alviandf.moviecatalogue.model.MovieResponse
+import com.alviandf.moviecatalogue.model.MovieOrTvShowResponse
 import com.google.gson.Gson
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -12,7 +12,7 @@ import java.util.Locale
 
 fun emptyString() = ""
 
-fun getMovieResponseFromAsset(context: Context, fileName: String): MovieResponse? {
+fun getMovieResponseFromAsset(context: Context, fileName: String): MovieOrTvShowResponse? {
     val jsonString: String
     try {
         jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
@@ -22,11 +22,11 @@ fun getMovieResponseFromAsset(context: Context, fileName: String): MovieResponse
     }
     return Gson().fromJson(
         jsonString,
-        MovieResponse::class.java
+        MovieOrTvShowResponse::class.java
     )
 }
 
-fun getTvResponseFromAsset(context: Context, fileName: String): MovieResponse? {
+fun getTvResponseFromAsset(context: Context, fileName: String): MovieOrTvShowResponse? {
     val jsonString: String
     try {
         jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
@@ -36,7 +36,7 @@ fun getTvResponseFromAsset(context: Context, fileName: String): MovieResponse? {
     }
     return Gson().fromJson(
         jsonString,
-        MovieResponse::class.java
+        MovieOrTvShowResponse::class.java
     )
 }
 

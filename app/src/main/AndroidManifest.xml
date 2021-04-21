@@ -11,7 +11,7 @@
         android:theme="@style/Theme.MovieCatalogue">
         <activity android:name=".presentation.detail.DetailActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".presentation.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -46,6 +46,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    androidTestImplementation "androidx.test:rules:1.2.0"
+
+    // Test
+    def espressoVersion = "3.1.0"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
@@ -74,7 +80,5 @@ dependencies {
 
     // Rounded ImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
-
-    implementation 'com.github.giswangsj:AndRatingBar:1.0.5'
 
 }

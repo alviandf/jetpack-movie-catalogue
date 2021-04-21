@@ -1,25 +1,27 @@
-package com.alviandf.moviecatalogue
+package com.alviandf.moviecatalogue.presentation.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.alviandf.moviecatalogue.R.id
+import com.alviandf.moviecatalogue.R.layout
 import kotlinx.android.synthetic.main.activity_main.navView
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(layout.activity_main)
 
         val appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.navMovie,
-            R.id.navTv
+            id.navMovie,
+            id.navTv
         ).build()
 
         val navController = Navigation.findNavController(this,
-            R.id.navHostFragment
+            id.navHostFragment
         )
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)

@@ -6,7 +6,7 @@
     tools:context=".presentation.main.MovieFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMovies"
+        android:id="@+id/rvTvShows"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

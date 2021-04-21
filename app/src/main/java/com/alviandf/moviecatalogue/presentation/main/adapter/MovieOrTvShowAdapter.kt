@@ -7,38 +7,38 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alviandf.moviecatalogue.R
-import com.alviandf.moviecatalogue.model.MovieResult
+import com.alviandf.moviecatalogue.model.MovieOrTvShowResult
 import com.alviandf.moviecatalogue.presentation.detail.DetailActivity
-import com.alviandf.moviecatalogue.utils.BundleKeys
+import com.alviandf.moviecatalogue.utils.Constants
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_row_data.view.imgPoster
 import kotlinx.android.synthetic.main.item_row_data.view.tvName
 
-class MovieAdapter(
+class MovieOrTvShowAdapter(
     val context: Context,
-    var movies: List<MovieResult>
+    var moviesOrTvShows: List<MovieOrTvShowResult>
     ) : RecyclerView.Adapter<MovieHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): MovieHolder {
         return MovieHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_data, viewGroup, false))
     }
 
-    override fun getItemCount(): Int = movies.size
+    override fun getItemCount(): Int = moviesOrTvShows.size
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        holder.bindUser(movies[position])
+        holder.bindUser(moviesOrTvShows[position])
     }
 }
 
 class MovieHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bindUser(movie: MovieResult) {
+    fun bindUser(movieOrTvShow: MovieOrTvShowResult) {
         with(itemView) {
-            Glide.with(this).load(BundleKeys.URL_POSTER + movie.poster_path).into(imgPoster)
-            tvName.text = movie.original_title ?: movie.original_name
+            Glide.with(this).load(Constants.URL_POSTER + movieOrTvShow.poster_path).into(imgPoster)
+            tvName.text = movieOrTvShow.title ?: movieOrTvShow.name
             setOnClickListener {
                 val intent = Intent(context, DetailActivity::class.java)
-                intent.putExtra(BundleKeys.EXTRA_USER, movie)
+                intent.putExtra(Constants.EXTRA_MOVIE_OR_TVSHOW, movieOrTvShow)
                 context.startActivity(intent)
             }
         }
