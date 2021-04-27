@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class MovieOrTvShowResult(
+    var type : String? = null,
     val adult: Boolean? = null,
     val backdrop_path: String? = null,
     val genre_ids: List<Int>? = null,
