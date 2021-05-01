@@ -1,14 +1,13 @@
 package com.alviandf.moviecatalogue.presentation.detail
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.alviandf.moviecatalogue.R
 import com.alviandf.moviecatalogue.model.MovieOrTvShowResult
 import com.alviandf.moviecatalogue.utils.Constants
+import com.alviandf.moviecatalogue.viewmodel.ViewModelFactory
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_detail.imgBackdrop
 import kotlinx.android.synthetic.main.activity_detail.ratingBar
@@ -27,18 +26,21 @@ class DetailActivity : AppCompatActivity() {
 
         val data = intent.getParcelableExtra<MovieOrTvShowResult>(Constants.EXTRA_MOVIE_OR_TVSHOW)
 
-        Log.d("TAG", "onCreate: " + data)
-
         if (data != null) {
-            initViewModel(data)
+            initViewModel()
+            getMovieOrvShowsDetail(data)
         }
     }
 
-    private fun initViewModel(data: MovieOrTvShowResult) {
-        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        val result = viewModel.getMovieOrTvShowById(data)
-        Log.d("TAG", "initViewModel: " + result)
-        setUI(result)
+    private fun getMovieOrvShowsDetail(data: MovieOrTvShowResult) {
+        viewModel.getMovieOrTvShowById(data).observe(this, { movieOrTvShow ->
+            setUI(movieOrTvShow)
+        })
+    }
+
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this, ViewModelFactory.getInstance(this)).get(DetailViewModel::class.java)
     }
 
     @SuppressLint("SetTextI18n")

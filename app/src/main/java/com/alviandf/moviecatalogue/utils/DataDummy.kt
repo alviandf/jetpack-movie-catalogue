@@ -1,8 +1,27 @@
 package com.alviandf.moviecatalogue.utils
 
+import com.alviandf.moviecatalogue.model.MovieOrTvShowResponse
 import com.alviandf.moviecatalogue.model.MovieOrTvShowResult
 
 object DataDummy {
+
+    fun generateMovieResponseDataDummy(): MovieOrTvShowResponse{
+        return MovieOrTvShowResponse(
+            page = 0,
+            results = generateMovieDataDummy(),
+            total_pages = 0,
+            total_results = 0
+        )
+    }
+
+    fun generateTvShowResponseDataDummy(): MovieOrTvShowResponse{
+        return MovieOrTvShowResponse(
+            page = 0,
+            results = generateTvShowDataDummy(),
+            total_pages = 0,
+            total_results = 0
+        )
+    }
 
     fun generateMovieDataDummy(): List<MovieOrTvShowResult> {
         val listMovie = ArrayList<MovieOrTvShowResult>()

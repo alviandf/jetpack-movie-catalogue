@@ -1,17 +1,17 @@
 package com.alviandf.moviecatalogue.presentation.main
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alviandf.moviecatalogue.R
 import com.alviandf.moviecatalogue.model.MovieOrTvShowResult
 import com.alviandf.moviecatalogue.presentation.main.adapter.MovieOrTvShowAdapter
+import com.alviandf.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_movie.rvMovies
 
 class MovieFragment : Fragment() {
@@ -34,20 +34,19 @@ class MovieFragment : Fragment() {
         movieOrTvShowAdapter = MovieOrTvShowAdapter(requireContext(), movies)
         initRecyclerView()
         initViewModel()
-        viewModel.getMovies()
         getMovies()
     }
 
     private fun getMovies() {
-        Log.d("TAG", "getMovies: " + viewModel.movieResponse)
-        viewModel.movieResponse.let {
-            movieOrTvShowAdapter.moviesOrTvShows = it ?: listOf()
-            movieOrTvShowAdapter.notifyDataSetChanged()
-        }
+        viewModel.getMovies().observe(viewLifecycleOwner, { movies ->
+            if(movies.results != null){
+                movieOrTvShowAdapter.setData(movies.results)
+            }
+        })
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactory.getInstance(requireContext())).get(MainViewModel::class.java)
     }
 
     private fun initRecyclerView() {

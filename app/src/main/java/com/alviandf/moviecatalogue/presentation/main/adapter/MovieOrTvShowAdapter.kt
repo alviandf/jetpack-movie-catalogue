@@ -19,6 +19,11 @@ class MovieOrTvShowAdapter(
     var moviesOrTvShows: List<MovieOrTvShowResult>
     ) : RecyclerView.Adapter<MovieHolder>() {
 
+    fun setData(data: List<MovieOrTvShowResult>){
+        moviesOrTvShows = data
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): MovieHolder {
         return MovieHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_data, viewGroup, false))
     }
