@@ -10,4 +10,9 @@
         android:title="@string/tv_show"
         android:icon="@drawable/ic_tv"/>
 
+    <item
+        android:id="@+id/navFavorite"
+        android:title="@string/favorite"
+        android:icon="@drawable/ic_favorite"/>
+
 </menu>

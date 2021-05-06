@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration.Builder(
             id.navMovie,
-            id.navTv
+            id.navTv,
+            id.navFavorite
         ).build()
 
         val navController = Navigation.findNavController(this,

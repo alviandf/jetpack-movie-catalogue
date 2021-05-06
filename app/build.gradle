@@ -46,13 +46,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // Test Rules
     androidTestImplementation "androidx.test:rules:1.2.0"
 
-    // Test
+    // Espresso
     def espressoVersion = "3.1.0"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
-
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -90,8 +90,16 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
 
+    // Android Core Test
     def androidCoreTestVersion = '2.1.0'
     testImplementation "androidx.arch.core:core-testing:$androidCoreTestVersion"
 
+    // Room dependency
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
+    // Paging
+    implementation "androidx.paging:paging-runtime:2.1.2"
 }

@@ -17,5 +17,11 @@
         android:label="Fragment TV Show"
         tools:layout="@layout/fragment_tv" />
 
+    <fragment
+        android:id="@+id/navFavorite"
+        android:name="com.alviandf.moviecatalogue.presentation.main.FavoriteFragment"
+        android:label="Fragment Favorite"
+        tools:layout="@layout/fragment_favorite" />
+
 
 </navigation>
