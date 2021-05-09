@@ -10,15 +10,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alviandf.moviecatalogue.R
 import com.alviandf.moviecatalogue.presentation.main.MainViewModel
-import com.alviandf.moviecatalogue.presentation.main.adapter.MovieOrTvShowAdapter
 import com.alviandf.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list_movie_or_tvshow.rvMoviesOrTvShows
 
 class MoviesOrTvShowsFragment : Fragment() {
 
+    private var index: Int? = 0
+
     private lateinit var viewModel: MainViewModel
 
-    private lateinit var movieOrTvShowAdapter: MovieOrTvShowAdapter
+    private lateinit var movieAdapter: MovieAdapter
+    private lateinit var tvShowAdapter: TvShowAdapter
 
     companion object {
 
@@ -44,54 +46,48 @@ class MoviesOrTvShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieOrTvShowAdapter = MovieOrTvShowAdapter(requireContext(),listOf())
+        index = arguments?.getInt(ARG_SECTION_NUMBER, 0)
+
+        movieAdapter = MovieAdapter()
+        tvShowAdapter = TvShowAdapter()
 
         initViewModel()
         initRecyclerView()
 
-        val index = arguments?.getInt(ARG_SECTION_NUMBER, 0)
-            if (index == 1) {
-//                rvMoviesOrTvShows.setBackgroundColor(Color.parseColor("#ffffff"))
-//                viewModel.getUserFollowers()
-            } else if (index == 2) {
-//                rvMoviesOrTvShows.setBackgroundColor(Color.parseColor("#000000"))
-//                viewModel.getUserFollowing()
-            }
+        if (index == 1) {
+            viewModel.getFavoriteMovies()
+        } else if (index == 2) {
+            viewModel.getFavoriteTvShows()
+        }
     }
 
     private fun initRecyclerView() {
         rvMoviesOrTvShows.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = movieOrTvShowAdapter
+
+            if (index == 1) {
+                adapter = movieAdapter
+            } else if (index == 2) {
+                adapter = tvShowAdapter
+            }
+
             setRecycledViewPool(RecyclerView.RecycledViewPool())
         }
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this, ViewModelFactory.getInstance(requireContext())).get(MainViewModel::class.java)
-//        viewModel.userFollowerResponse.observe(this, { response ->
-//            if (response.isSuccessful) {
-//                val user = response.body()
-//                if (user != null) {
-//                    Log.d("asdf", "initViewModel: " + user)
-//                    userAdapter.users = user
-//                    userAdapter.notifyDataSetChanged()
-//                }
-//            } else {
-//                Toast.makeText(requireContext(), response.message(), Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//        viewModel.userFollowingResponse.observe(this, { response ->
-//            if (response.isSuccessful) {
-//                val user = response.body()
-//                if (user != null) {
-//                    Log.d("asdf", "initViewModel: " + user)
-//                    userAdapter.users = user
-//                    userAdapter.notifyDataSetChanged()
-//                }
-//            } else {
-//                Toast.makeText(requireContext(), response.message(), Toast.LENGTH_SHORT).show()
-//            }
-//        })
+
+        if (index == 1) {
+            viewModel.getFavoriteMovies().observe(viewLifecycleOwner, { movies ->
+                movieAdapter.submitList(movies)
+                movieAdapter.notifyDataSetChanged()
+            })
+        } else if (index == 2) {
+            viewModel.getFavoriteTvShows().observe(viewLifecycleOwner, { movies ->
+                tvShowAdapter.submitList(movies)
+                tvShowAdapter.notifyDataSetChanged()
+            })
+        }
     }
 }

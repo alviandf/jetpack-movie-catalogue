@@ -2,23 +2,34 @@ package com.alviandf.moviecatalogue.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.alviandf.moviecatalogue.data.source.local.LocalDataSource
+import com.alviandf.moviecatalogue.data.source.local.entity.MovieEntity
+import com.alviandf.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.alviandf.moviecatalogue.data.source.remote.RemoteDataSource
 import com.alviandf.moviecatalogue.data.source.remote.RemoteDataSource.LoadMoviesAndTvShowsCallback
 import com.alviandf.moviecatalogue.data.source.remote.RemoteDataSource.LoadMoviesCallback
 import com.alviandf.moviecatalogue.data.source.remote.RemoteDataSource.LoadTvShowsCallback
 import com.alviandf.moviecatalogue.model.MovieOrTvShowResponse
 import com.alviandf.moviecatalogue.model.MovieOrTvShowResult
+import com.alviandf.moviecatalogue.utils.AppExecutors
 import com.alviandf.moviecatalogue.utils.Constants
 
-class Repository private constructor(private val remoteDataSource: RemoteDataSource) : DataSource  {
+class Repository private constructor(
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource,
+    private val appExecutors: AppExecutors
+) : DataSource {
 
     companion object {
+
         @Volatile
         private var instance: Repository? = null
 
-        fun getInstance(remoteData: RemoteDataSource): Repository =
+        fun getInstance(remoteData: RemoteDataSource, localDataSource: LocalDataSource, appExecutors: AppExecutors): Repository =
             instance ?: synchronized(this) {
-                Repository(remoteData).apply { instance = this }
+                Repository(remoteData, localDataSource, appExecutors).apply { instance = this }
             }
     }
 
@@ -26,7 +37,7 @@ class Repository private constructor(private val remoteDataSource: RemoteDataSou
         val moviesResults = MutableLiveData<MovieOrTvShowResponse>()
         remoteDataSource.getAllMovies(object : LoadMoviesCallback {
             override fun onAllMoviesReceived(moviesResponse: MovieOrTvShowResponse) {
-                for(i in 0..(moviesResponse.results?.size?.minus(1) ?: 0)){
+                for (i in 0..(moviesResponse.results?.size?.minus(1) ?: 0)) {
                     moviesResponse.results?.get(i)?.type = Constants.TYPE_MOVIE
                 }
 
@@ -43,14 +54,14 @@ class Repository private constructor(private val remoteDataSource: RemoteDataSou
             override fun onAllMoviesAndTvShowsReceived(movies: MovieOrTvShowResponse, tvShows: MovieOrTvShowResponse) {
                 var listMovieOrTvShow = listOf<MovieOrTvShowResult>()
 
-                if(data.type == Constants.TYPE_MOVIE){
+                if (data.type == Constants.TYPE_MOVIE) {
                     listMovieOrTvShow = movies.results ?: listOf()
-                }else if(data.type == Constants.TYPE_TVSHOW){
+                } else if (data.type == Constants.TYPE_TVSHOW) {
                     listMovieOrTvShow = tvShows.results ?: listOf()
                 }
 
-                for (movieOrTvShow in listMovieOrTvShow){
-                    if (movieOrTvShow.id == data.id){
+                for (movieOrTvShow in listMovieOrTvShow) {
+                    if (movieOrTvShow.id == data.id) {
                         movieOrTvShowResults.postValue(movieOrTvShow)
                         break
                     }
@@ -65,7 +76,7 @@ class Repository private constructor(private val remoteDataSource: RemoteDataSou
         val tvShowsResults = MutableLiveData<MovieOrTvShowResponse>()
         remoteDataSource.getAllTvShows(object : LoadTvShowsCallback {
             override fun onAllTvShowsReceived(tvShowResponse: MovieOrTvShowResponse) {
-                for(i in 0..(tvShowResponse.results?.size?.minus(1) ?: 0)){
+                for (i in 0..(tvShowResponse.results?.size?.minus(1) ?: 0)) {
                     tvShowResponse.results?.get(i)?.type = Constants.TYPE_TVSHOW
                 }
 
@@ -74,5 +85,57 @@ class Repository private constructor(private val remoteDataSource: RemoteDataSou
         })
 
         return tvShowsResults
+    }
+
+    // Local
+
+    override fun insertMovie(movieEntity: MovieEntity) {
+        appExecutors.diskIO().execute {
+            localDataSource.insertMovie(movieEntity)
+        }
+    }
+
+    override fun insertTvShow(tvShowEntity: TvShowEntity) {
+        appExecutors.diskIO().execute {
+            localDataSource.insertTvShow(tvShowEntity)
+        }
+    }
+
+    override fun getFavoriteMovies(): LiveData<PagedList<MovieEntity>> {
+        val config = PagedList.Config.Builder().apply {
+            setEnablePlaceholders(false)
+            setInitialLoadSizeHint(4)
+            setPageSize(4)
+        }.build()
+        return LivePagedListBuilder(localDataSource.getListMovies(), config).build()
+    }
+
+    override fun getFavoriteTvShows(): LiveData<PagedList<TvShowEntity>> {
+        val config = PagedList.Config.Builder().apply {
+            setEnablePlaceholders(false)
+            setInitialLoadSizeHint(4)
+            setPageSize(4)
+        }.build()
+        return LivePagedListBuilder(localDataSource.getListTvShows(), config).build()
+    }
+
+    override fun getMovieDetail(id: Int): LiveData<MovieEntity> {
+        return localDataSource.getDetailMovie(id)
+    }
+
+    override fun getTvShowDetail(id: Int): LiveData<TvShowEntity> {
+        return localDataSource.getDetailTvShow(id)
+    }
+
+    override fun deleteMovieById(id: Int) {
+        appExecutors.diskIO().execute{
+            localDataSource.deleteMovieById(id)
+        }
+    }
+
+    override fun deleteTvShowById(id: Int) {
+        appExecutors.diskIO().execute{
+            localDataSource.deleteTvShowById(id)
+        }
     }
 }

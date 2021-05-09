@@ -41,11 +41,6 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViewPager()
-
-//        movieOrTvShowAdapter = MovieOrTvShowAdapter(requireContext(), movies)
-//        initRecyclerView()
-//        initViewModel()
-//        getMovies()
     }
 
     private fun initViewPager() {
@@ -54,7 +49,5 @@ class FavoriteFragment : Fragment() {
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = TAB_TITLES[position]
         }.attach()
-
-//        supportActionBar?.elevation = 0f
     }
 }

@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhiteThree"
+    android:fillViewport="true"
     tools:context=".presentation.main.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,9 +24,8 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout_height="400dp"
-            android:background="@color/colorWhiteThree"
-            app:layout_constraintTop_toBottomOf="@+id/tabs" />
+            app:layout_constraintTop_toBottomOf="@+id/tabs"
+            tools:layout_height="400dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
