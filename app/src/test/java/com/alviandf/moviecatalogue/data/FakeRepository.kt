@@ -26,7 +26,7 @@ class FakeRepository constructor(
         val moviesResults = MutableLiveData<MovieOrTvShowResponse>()
         remoteDataSource.getAllMovies(object : LoadMoviesCallback {
             override fun onAllMoviesReceived(moviesResponse: MovieOrTvShowResponse) {
-                for(i in 0..(moviesResponse.results?.size?.minus(1) ?: 0)){
+                for (i in 0..(moviesResponse.results?.size?.minus(1) ?: 0)) {
                     moviesResponse.results?.get(i)?.type = Constants.TYPE_MOVIE
                 }
 
@@ -43,14 +43,14 @@ class FakeRepository constructor(
             override fun onAllMoviesAndTvShowsReceived(movies: MovieOrTvShowResponse, tvShows: MovieOrTvShowResponse) {
                 var listMovieOrTvShow = listOf<MovieOrTvShowResult>()
 
-                if(data.type == Constants.TYPE_MOVIE){
+                if (data.type == Constants.TYPE_MOVIE) {
                     listMovieOrTvShow = movies.results ?: listOf()
-                }else if(data.type == Constants.TYPE_TVSHOW){
+                } else if (data.type == Constants.TYPE_TVSHOW) {
                     listMovieOrTvShow = tvShows.results ?: listOf()
                 }
 
-                for (movieOrTvShow in listMovieOrTvShow){
-                    if (movieOrTvShow.id == data.id){
+                for (movieOrTvShow in listMovieOrTvShow) {
+                    if (movieOrTvShow.id == data.id) {
                         movieOrTvShowResults.postValue(movieOrTvShow)
                         break
                     }
@@ -65,7 +65,7 @@ class FakeRepository constructor(
         val tvShowsResults = MutableLiveData<MovieOrTvShowResponse>()
         remoteDataSource.getAllTvShows(object : LoadTvShowsCallback {
             override fun onAllTvShowsReceived(tvShowResponse: MovieOrTvShowResponse) {
-                for(i in 0..(tvShowResponse.results?.size?.minus(1) ?: 0)){
+                for (i in 0..(tvShowResponse.results?.size?.minus(1) ?: 0)) {
                     tvShowResponse.results?.get(i)?.type = Constants.TYPE_TVSHOW
                 }
 
@@ -77,15 +77,11 @@ class FakeRepository constructor(
     }
 
     override fun insertMovie(movieEntity: MovieEntity) {
-        appExecutors.diskIO().execute {
-            localDataSource.insertMovie(movieEntity)
-        }
+        localDataSource.insertMovie(movieEntity)
     }
 
     override fun insertTvShow(tvShowEntity: TvShowEntity) {
-        appExecutors.diskIO().execute {
-            localDataSource.insertTvShow(tvShowEntity)
-        }
+        localDataSource.insertTvShow(tvShowEntity)
     }
 
     override fun getFavoriteMovies(): LiveData<PagedList<MovieEntity>> {
@@ -115,14 +111,10 @@ class FakeRepository constructor(
     }
 
     override fun deleteMovieById(id: Int) {
-        appExecutors.diskIO().execute{
-            localDataSource.deleteMovieById(id)
-        }
+        localDataSource.deleteMovieById(id)
     }
 
     override fun deleteTvShowById(id: Int) {
-        appExecutors.diskIO().execute{
-            localDataSource.deleteTvShowById(id)
-        }
+        localDataSource.deleteTvShowById(id)
     }
 }

@@ -1,10 +1,13 @@
 package com.alviandf.moviecatalogue.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource.Factory
 import com.alviandf.moviecatalogue.data.source.local.LocalDataSource
 import com.alviandf.moviecatalogue.data.source.local.entity.MovieEntity
 import com.alviandf.moviecatalogue.data.source.local.entity.TvShowEntity
+import com.alviandf.moviecatalogue.data.source.local.entity.toMovieEntity
+import com.alviandf.moviecatalogue.data.source.local.entity.toTvShowEntity
 import com.alviandf.moviecatalogue.data.source.remote.RemoteDataSource
 import com.alviandf.moviecatalogue.utils.AppExecutors
 import com.alviandf.moviecatalogue.utils.Constants
@@ -38,6 +41,8 @@ class RepositoryTest {
     private val listTvShow = DataDummy.generateTvShowDataDummy()
     private val movie = listMovie[0]
     private val tvShow = listTvShow[0]
+    private val movieEntity = movie.toMovieEntity()
+    private val tvShowEntity = tvShow.toTvShowEntity()
 
     private val dummyData = DataDummy.generateMovieDataDummy()[0]
 
@@ -107,5 +112,41 @@ class RepositoryTest {
         Mockito.verify(local).getListTvShows()
         assertNotNull(tvShowEntity)
         assertEquals(listTvShow.size, tvShowEntity.size)
+    }
+
+    @Test
+    fun insertMovie() {
+        doNothing().`when`(local).insertMovie(movieEntity)
+        repository.insertMovie(movieEntity)
+
+        verify(local, times(1)).insertMovie(movieEntity)
+    }
+
+    @Test
+    fun insertTvShow() {
+        doNothing().`when`(local).insertTvShow(tvShowEntity)
+        repository.insertTvShow(tvShowEntity)
+
+        verify(local, times(1)).insertTvShow(tvShowEntity)
+    }
+
+    @Test
+    fun deleteMovieById() {
+        val id = tvShow.id ?: 0
+
+        doNothing().`when`(local).deleteMovieById(id)
+        repository.deleteMovieById(id)
+
+        verify(local, times(1)).deleteMovieById(id)
+    }
+
+    @Test
+    fun deleteTvShowById() {
+        val id = tvShow.id ?: 0
+
+        doNothing().`when`(local).deleteTvShowById(id)
+        repository.deleteTvShowById(id)
+
+        verify(local, times(1)).deleteTvShowById(id)
     }
 }
